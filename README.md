@@ -29,7 +29,7 @@ Il wizard ti chiederà:
 - I servizi che offri (con prezzi)
 - Il tono di comunicazione
 - La tua API key di Anthropic Claude
-- Una password per proteggere la dashboard
+- Nome utente e password per proteggere la dashboard CRM
 
 Al termine vengono generati automaticamente `config.json` e `.env`.
 
@@ -56,7 +56,9 @@ Quando vedi `[whatsapp] Connesso a WhatsApp` sei operativo.
 http://IP-DEL-SERVER/crm
 ```
 
-Inserisci la password scelta durante il setup.
+Inserisci nome utente e password scelti durante il setup.
+
+> **Consiglio:** esponi la dashboard solo via Tailscale (VPN) e usa HTTPS per evitare che le credenziali viaggino in chiaro.
 
 ---
 
@@ -124,7 +126,7 @@ whatsapp-agent/
 
 ## Sicurezza
 
-- La dashboard è protetta da password (HTTP Basic Auth)
+- La dashboard è protetta da nome utente e password (HTTP Basic Auth)
 - `config.json` e `.env` sono esclusi dal repository (`.gitignore`)
 - Il database locale non viene mai caricato su servizi esterni
-- Consigliato: accesso alla dashboard solo via VPN (es. Tailscale)
+- Consigliato: accesso alla dashboard solo via VPN (es. Tailscale) con HTTPS

@@ -7,11 +7,15 @@ export const dashboardRouter = Router();
 dashboardRouter.use((req, res, next) => {
   const password = process.env.CRM_PASSWORD;
   if (!password) return next();
+  const username = process.env.CRM_USER || '';
   const auth = req.headers['authorization'];
   if (!auth?.startsWith('Basic '))
     return res.set('WWW-Authenticate', 'Basic realm="CRM"').status(401).end();
-  const pwd = Buffer.from(auth.split(' ')[1], 'base64').toString().split(':')[1];
-  if (pwd !== password)
+  const decoded = Buffer.from(auth.split(' ')[1], 'base64').toString();
+  const colon = decoded.indexOf(':');
+  const user = decoded.slice(0, colon);
+  const pwd  = decoded.slice(colon + 1);
+  if (pwd !== password || (username && user !== username))
     return res.set('WWW-Authenticate', 'Basic realm="CRM"').status(401).end();
   next();
 });

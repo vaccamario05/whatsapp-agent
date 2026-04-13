@@ -111,6 +111,8 @@ const lingue = await ask('Lingue parlate (es. italiano, inglese)', existing.ling
 separator('5 / 5  CONFIGURAZIONE TECNICA');
 
 const apiKey = await ask('API key di Anthropic Claude (sk-ant-...)', existingEnv.ANTHROPIC_API_KEY || '');
+const ownerPhone = await ask('Il tuo numero di telefono personale (es. 393771234567, senza + e spazi)', existingEnv.OWNER_PHONE || '');
+const crmUrl = await ask('URL della dashboard CRM (es. https://server/crm)', existingEnv.CRM_URL || '');
 const crmUser = await ask('Nome utente per la dashboard CRM', existingEnv.CRM_USER || '');
 const crmPassword = await ask('Password per la dashboard CRM', existingEnv.CRM_PASSWORD || '');
 const porta = await ask('Porta del server', existingEnv.PORT || '3000');
@@ -124,6 +126,8 @@ writeFileSync('./config.json', JSON.stringify(config, null, 2));
 const envContent = [
   `ANTHROPIC_API_KEY=${apiKey}`,
   `PORT=${porta}`,
+  ownerPhone  ? `OWNER_PHONE=${ownerPhone}`   : '',
+  crmUrl      ? `CRM_URL=${crmUrl}`           : '',
   crmUser     ? `CRM_USER=${crmUser}`         : '',
   crmPassword ? `CRM_PASSWORD=${crmPassword}` : '',
 ].filter(Boolean).join('\n') + '\n';

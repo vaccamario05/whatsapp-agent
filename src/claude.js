@@ -110,11 +110,12 @@ export async function processMessage(from, userMessage) {
       if (cliente?.stato === 'Nuovo') {
         updateCliente(from, { Stato: 'Da richiamare' });
         console.log('[debug] cliente marcato Da richiamare:', from);
+        return { risposta: assistantMessage, notificaOwner: true, clienteTelefono: from, clienteNome: datiEstratti.nome || null };
       }
     }
   } catch (err) {
     console.error('[claude] Errore estrazione dati:', err.message);
   }
 
-  return assistantMessage;
+  return { risposta: assistantMessage, notificaOwner: false };
 }

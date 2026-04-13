@@ -29,6 +29,7 @@ Il wizard ti chiederà:
 - I servizi che offri (con prezzi)
 - Il tono di comunicazione
 - La tua API key di Anthropic Claude
+- Il tuo numero di telefono personale (per ricevere notifiche WhatsApp)
 - Nome utente e password per proteggere la dashboard CRM
 
 Al termine vengono generati automaticamente `config.json` e `.env`.
@@ -120,7 +121,8 @@ whatsapp-agent/
 2. L'AI risponde qualificando la richiesta in base alla tua configurazione
 3. Quando il cliente mostra interesse concreto, l'AI dice che lo ricontatterai personalmente
 4. Il cliente viene salvato nel database con stato `Da richiamare`
-5. Dalla dashboard CRM vedi tutti i clienti e le conversazioni
+5. Ricevi una notifica WhatsApp sul tuo numero personale con i dati del lead
+6. Dalla dashboard CRM vedi tutti i clienti e le conversazioni
 
 ---
 

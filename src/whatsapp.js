@@ -66,8 +66,25 @@ client.on('message_create', async (msg) => {
   try {
     const contact = await msg.getContact();
     const from = contact.number || msg.from.replace('@c.us', '').replace('@lid', '');
-    const risposta = await processMessage(from, msg.body);
-    await msg.reply(risposta);
+    const risultato = await processMessage(from, msg.body);
+    await msg.reply(risultato.risposta);
+
+    if (risultato.notificaOwner && process.env.OWNER_PHONE) {
+      const ownerWid = process.env.OWNER_PHONE.replace(/\D/g, '') + '@c.us';
+      const nome = risultato.clienteNome ? ` (${risultato.clienteNome})` : '';
+      const crmUrl = process.env.CRM_URL || '';
+      const notifica =
+        `Nuovo lead interessato${nome}!\n` +
+        `Telefono: +${from}\n\n` +
+        `Il cliente ha mostrato interesse concreto. Richiamalo appena puoi.` +
+        (crmUrl ? `\nCRM: ${crmUrl}` : '');
+      try {
+        await client.sendMessage(ownerWid, notifica);
+        console.log('[whatsapp] Notifica owner inviata');
+      } catch (e) {
+        console.error('[whatsapp] Errore notifica owner:', e.message);
+      }
+    }
   } catch (err) {
     console.error(`[whatsapp] Errore da ${msg.from}:`, err.message);
   }

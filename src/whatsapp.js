@@ -52,16 +52,16 @@ client.on('auth_failure', () => {
 });
 
 client.on('disconnected', (reason) => {
-  console.log('[whatsapp] Disconnesso:', reason, '— riavvio container');
-  process.exit(1);
+  console.log('[whatsapp] Disconnesso:', reason, '— riavvio tra 30s');
+  setTimeout(() => process.exit(1), 30000);
 });
 
-client.on('message_create', async (msg) => {
-  if (msg.fromMe) return;
+client.on('message', async (msg) => {
   if (msg.from.endsWith('@g.us')) return;
   if (msg.from === 'status@broadcast') return;
   if (Date.now() - Number(msg.timestamp) * 1000 > 60000) return;
   if (!msg.body?.trim()) return;
+  console.log('[whatsapp] Messaggio da:', msg.from);
 
   try {
     const contact = await msg.getContact();
@@ -69,6 +69,7 @@ client.on('message_create', async (msg) => {
     const risultato = await processMessage(from, msg.body);
     await msg.reply(risultato.risposta);
 
+    console.log('[debug] notificaOwner:', risultato.notificaOwner, '| OWNER_PHONE:', !!process.env.OWNER_PHONE);
     if (risultato.notificaOwner && process.env.OWNER_PHONE) {
       const ownerWid = process.env.OWNER_PHONE.replace(/\D/g, '') + '@c.us';
       const nome = risultato.clienteNome ? ` (${risultato.clienteNome})` : '';

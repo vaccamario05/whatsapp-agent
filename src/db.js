@@ -75,6 +75,18 @@ export function updateCliente(telefono, campi) {
   }
 }
 
+export function updateClienteDiretto(telefono, campi) {
+  const consentite = ['nome', 'email', 'data_evento', 'location', 'servizio', 'budget', 'stato'];
+  const set = [], values = [];
+  for (const [col, val] of Object.entries(campi)) {
+    if (consentite.includes(col)) { set.push(`${col} = ?`); values.push(val ?? null); }
+  }
+  if (!set.length) return;
+  values.push(telefono);
+  db.prepare(`UPDATE clienti SET ${set.join(', ')} WHERE telefono = ?`).run(...values);
+  console.log('[db] updateClienteDiretto:', telefono, JSON.stringify(campi));
+}
+
 export function getAllClienti() {
   return db.prepare('SELECT * FROM clienti ORDER BY created_at DESC').all();
 }

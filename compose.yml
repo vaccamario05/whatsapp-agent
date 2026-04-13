@@ -15,3 +15,4 @@ services:
       - ./auth_whatsapp:/app/auth_whatsapp
       - ./mario-agent.db:/app/mario-agent.db
       - ./config.json:/app/config.json
+      - ./src:/app/src
